@@ -1,3 +1,6 @@
+import java.io.*;
+import java.util.*;
+
 public class WordGrid {
     private char[][] data;
 
@@ -7,7 +10,7 @@ public class WordGrid {
      * @param rows the starting height of the WordGrid
      * @param cols the starting width of the WordGrid
      */
-    public WordGrid(int rows,int cols) {
+    public WordGrid(int rows, int cols) {
 	data = new char[rows][cols];
 	clear();
     }
@@ -59,7 +62,7 @@ public class WordGrid {
 	    }
 	}
 	catch (ArrayIndexOutOfBoundsException e) {
-	    // went past the boundaries of the grid, so the word doesn't fit
+	    // went past the boundaries of the grid
 	    return false;
 	}
 	// match - eat it, just eat it
@@ -98,6 +101,52 @@ public class WordGrid {
 	default:
 	    throw new IllegalArgumentException("direction must be in [0, 8)");
 	}
+    }
+
+    public static List<String> readWords(String filename)
+	throws FileNotFoundException {
+
+	Scanner scan = new Scanner(new File(filename));
+	List wordList = new ArrayList();
+
+	while (scan.hasNextLine()) {
+	    String line = scan.nextLine();
+	    if (line.length() > 0) {
+		wordList.add(line.toUpperCase().trim());
+	    }
+	}
+
+	return wordList;
+    }
+
+    public WordGrid(int rows, int cols, List<String> wordList, int seed, boolean cheat) {
+	WordGrid grid = new WordGrid(rows, cols);
+	Random rand = new Random(seed);
+
+	for (String i: wordList) {
+	    add(i, rand));
+    } // FIXME misnestation???
+
+    if (!cheat)
+	fillRest(rand);
+
+    return grid;
+}
+
+    /**
+     * Attempts, up to four times, to add the given word to a random position going in a random direction.
+     * @return {@literal true} if the word was added successfully, {@literal false} otherwise
+     */
+    public boolean add(String word, Random rand) {
+	for (int i = 0; i < 4; i++) {
+	    int row = rand.nextInt(row),
+		col = rand.nextInt(col),
+		direction = rand.nextInt(8);
+	    if (add(word, row, col, direction)) {
+		return true;
+	    }
+	}
+	return false;
     }
 
 }

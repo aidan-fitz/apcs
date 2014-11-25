@@ -1,6 +1,7 @@
-public class Driver {
+import java.io.*;
+import java.util.*;
 
-    public static String[] akameWords = ["AKAME", "MURASAME", "MINE", "PUMPKIN", "TEIGU", "TATSUMI", "NIGHTRAID", "INCURSIO", "KYOROCH", "SHEELE", "CHELSEA", "NAJENDA", "ESDEATH", "JAEGARS", "SERYU", "WAVE", "LEONE"];
+public class Driver {
 
     public static void main(String[] args) {
 	
