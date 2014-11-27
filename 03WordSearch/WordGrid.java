@@ -2,10 +2,13 @@ import java.io.*;
 import java.util.*;
 
 public class WordGrid {
+
     private char[][] data;
+    private Random rand;
+    private List<String> wordList;
 
     /**
-     * Initialize the grid to the size specified and fill all of the positions
+     * Initializes the grid to the size specified and fill all of the positions
      * with spaces.
      * @param rows the starting height of the WordGrid
      * @param cols the starting width of the WordGrid
@@ -13,9 +16,24 @@ public class WordGrid {
     public WordGrid(int rows, int cols) {
 	data = new char[rows][cols];
 	clear();
+	rand = new Random();
+	// Cheating by using a LinkedList because people are adding to the end
+	wordList = new LinkedList<String>();
     }
 
-    /**Set all values in the WordGrid to spaces ' '*/
+    /**
+     * Initializes the grid to the size and random seed specified.
+     */
+    public WordGrid(int rows, int cols, long seed) {
+	this(rows, cols);
+	setSeed(seed);
+    }
+
+    public void setSeed(long seed) {
+	rand.setSeed(seed);
+    }
+
+    /** Set all values in the WordGrid to spaces ' ' */
     private void clear() {
 	for (char[] row: data) {
 	    for (int col = 0; col < row.length; col++) {
@@ -34,7 +52,7 @@ public class WordGrid {
 		swag.append(cell).append(' ');
 	    }
 	    // Replace the last space with a line break
-	    swag.replace(swag.length() - 1, swag.length(), '\n');
+	    swag.replace(swag.length() - 1, swag.length(), "\n");
 	}
 	// ok, swag
 	return swag.toString();
@@ -55,10 +73,11 @@ public class WordGrid {
 	try {
 	    for (int index = 0; index < word.length(); index++) {
 		char inGrid = charAt(index, row, col, direction);
-    		if (inGrid != ' ' && inGrid != word.charAt(index))) {
-		// not a space and not equal to the corresponding character
-		// in the word
-		return false;
+    		if (inGrid != ' ' && inGrid != word.charAt(index)) {
+		    // not a space and not equal to the corresponding character
+		    // in the word
+		    return false;
+		}
 	    }
 	}
 	catch (ArrayIndexOutOfBoundsException e) {
@@ -67,7 +86,7 @@ public class WordGrid {
 	}
 	// match - eat it, just eat it
 	for (int index = 0; index < word.length(); index++) {
-	    addChar(c, index, row, col, direction);
+	    addChar(word.charAt(index), index, row, col, direction);
 	}
 	return true;
     }
@@ -107,7 +126,7 @@ public class WordGrid {
 	throws FileNotFoundException {
 
 	Scanner scan = new Scanner(new File(filename));
-	List wordList = new ArrayList();
+	List<String> wordList = new ArrayList<String>();
 
 	while (scan.hasNextLine()) {
 	    String line = scan.nextLine();
@@ -119,34 +138,43 @@ public class WordGrid {
 	return wordList;
     }
 
-    public WordGrid(int rows, int cols, List<String> wordList, int seed, boolean cheat) {
-	WordGrid grid = new WordGrid(rows, cols);
-	Random rand = new Random(seed);
+    public WordGrid(int rows, int cols, List<String> wordList, long seed, boolean cheat) {
+	this(rows, cols, seed);
 
 	for (String i: wordList) {
-	    add(i, rand));
-    } // FIXME misnestation???
+	    add(i);
+	}
 
-    if (!cheat)
-	fillRest(rand);
-
-    return grid;
-}
+	if (!cheat)
+	    fillRest();
+    }
 
     /**
      * Attempts, up to four times, to add the given word to a random position going in a random direction.
      * @return {@literal true} if the word was added successfully, {@literal false} otherwise
      */
-    public boolean add(String word, Random rand) {
+    public boolean add(String word) {
 	for (int i = 0; i < 4; i++) {
-	    int row = rand.nextInt(row),
-		col = rand.nextInt(col),
+	    int row = rand.nextInt(data.length), // rows
+		col = rand.nextInt(data[0].length), // cols
 		direction = rand.nextInt(8);
 	    if (add(word, row, col, direction)) {
+		wordList.add(word);
 		return true;
 	    }
 	}
 	return false;
     }
 
+    public List<String> words() {
+	return wordList;
+    }
+
+    public String wordsInPuzzle() {
+	return wordList.toString();
+    }
+
+    public void fillRest() {
+	// TODO stub
+    }
 }
