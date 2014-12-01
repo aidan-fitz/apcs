@@ -122,13 +122,6 @@ public class WordGrid {
 	}
     }
 
-    public WordGrid(int rows, int cols, List<String> wordList, long seed, boolean cheat) {
-	this(rows, cols, seed);
-	add(wordList);
-	if (!cheat)
-	    fillRest();
-    }
-
     /**
      * Attempts, up to four times, to add the given word to a random position going in a random direction.
      * @return {@literal true} if the word was added successfully, {@literal false} otherwise
@@ -173,7 +166,16 @@ public class WordGrid {
 	return wordList.toString();
     }
 
-    public void fillRest() {
-	// TODO stub
+    public void fillRest(boolean cheat) {
+	for (char[] row: data) {
+	    for (int i = 0; i < row.length; i++) {
+		if (row[i] == ' ') {
+		    if (cheat)
+			row[i] = '*';
+		    else
+			row[i] = (char) ('A' + rand.nextInt(26));
+		}
+	    }
+	}
     }
 }

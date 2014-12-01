@@ -25,7 +25,11 @@ public class Driver {
 	    return;
 	}
 	List<String> wordList = readWords("akame-words.txt");
-	WordGrid grid = new WordGrid(rows, cols, wordList, seed, cheat);
+	WordGrid grid = new WordGrid(rows, cols, seed);
+	grid.add(wordList, 45);
+	grid.fillRest(cheat);
+	
+	System.out.println(grid.words().size() + " words");
 	System.out.println(grid.wordsInPuzzle());
 	System.out.println();
 	System.out.println(grid);
