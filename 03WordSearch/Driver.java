@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Driver {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
 	int rows, cols;
 	long seed = System.currentTimeMillis();
 	boolean cheat = false;
@@ -24,13 +24,11 @@ public class Driver {
 	    System.out.println("Usage: java Driver rows [cols [seed [cheat]]]");
 	    return;
 	}
-	try {
-	    List<String> wordList = readWords("akame-words.txt");
-	    WordGrid grid = new WordGrid(rows, cols, wordList, seed, cheat);
-	}
-	catch (FileNotFoundException e) {
-	    e.printStackTrace();
-	}
+	List<String> wordList = readWords("akame-words.txt");
+	WordGrid grid = new WordGrid(rows, cols, wordList, seed, cheat);
+	System.out.println(grid.wordsInPuzzle());
+	System.out.println();
+	System.out.println(grid);
     }
 
     public static List<String> readWords(String filename)
