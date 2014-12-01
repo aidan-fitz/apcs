@@ -122,29 +122,9 @@ public class WordGrid {
 	}
     }
 
-    public static List<String> readWords(String filename)
-	throws FileNotFoundException {
-
-	Scanner scan = new Scanner(new File(filename));
-	List<String> wordList = new ArrayList<String>();
-
-	while (scan.hasNextLine()) {
-	    String line = scan.nextLine();
-	    if (line.length() > 0) {
-		wordList.add(line.toUpperCase().trim());
-	    }
-	}
-
-	return wordList;
-    }
-
     public WordGrid(int rows, int cols, List<String> wordList, long seed, boolean cheat) {
 	this(rows, cols, seed);
-
-	for (String i: wordList) {
-	    add(i);
-	}
-
+	add(wordList);
 	if (!cheat)
 	    fillRest();
     }
@@ -164,6 +144,25 @@ public class WordGrid {
 	    }
 	}
 	return false;
+    }
+
+    public void add(List<String> words) {
+	for (String i: words) {
+	    add(i);
+	}
+    }
+
+    public void add(List<String> words, int n) {
+	if (n >= words.size()) {
+	    add(words);
+	    return;
+	}
+	// Random n w/o replacement: http://stackoverflow.com/a/8378788
+	List<String> copy = new ArrayList<String>(words);
+	Collections.shuffle(copy);
+	// won't spill back into the calling method
+	words = copy.subList(0, n);
+	add(words);
     }
 
     public List<String> words() {
