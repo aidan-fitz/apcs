@@ -22,21 +22,26 @@ public class OrderedSuperArray<E extends Comparable<? super E>> {
 
     public E get(int index) {
 	if (index < size && index >= 0)
-	    return contents[index];
+	    return (E) contents[index];
 	else if (index >= -size) // Python-style negative indices
-	    return contents[size + index];
+	    return (E) contents[size + index];
 	else
 	    throw new ArrayIndexOutOfBoundsException(index);
     }
 
     public void add(E e) {
-	add(index(e, 0, size), e);
+	if (size == 0) {
+	    contents[0] = e;
+	    size++;
+	}
+	else
+	    add(index(e, 0, size), e);
     }
 
     public E set(int index, E e) {
 	if (index < size) {
-	    E old = contents[index];
-	    contents[index] = e;
+	    E old = (E) contents[index];
+	    contents[index] = (Comparable) e;
 	    return old;
 	}
 	else {
@@ -46,7 +51,7 @@ public class OrderedSuperArray<E extends Comparable<? super E>> {
 
     public E remove(int index) {
 	if (index < size) {
-	    E old = contents[index];
+	    E old = (E) contents[index];
 	    shift(index, size - 1, -1);
 	    size--;
 	    if (size < contents.length >> 2)
@@ -60,19 +65,20 @@ public class OrderedSuperArray<E extends Comparable<? super E>> {
 
     // Implements a recursive binary search
     private int index(E e, int lower, int upper) {
-	if (e.compareTo(contents[lower]) <= 0)
+	Comparable cast = (Comparable) e;
+	if (cast.compareTo(contents[lower]) <= 0)
 	    return lower;
-	if (e.compareTo(contents[upper]) >= 0)
+	if (cast.compareTo(contents[upper - 1]) >= 0)
 	    return upper;
 	int pivot = (lower + upper) / 2,
-	    comparison = e.compareTo(contents[pivot]);
+	    comparison = cast.compareTo(contents[pivot]);
 	if (comparison < 0)
 	    return index(e, lower, pivot);
 	else
 	    return index(e, pivot, upper);
     }
 
-    // use with index(E,int,int)
+    // use with index(Comparable,int,int)
     private void add(int index, E e) {
 	if (size < contents.length) {
 	    if (index >= size) {
@@ -93,7 +99,7 @@ public class OrderedSuperArray<E extends Comparable<? super E>> {
 
     private void shift(int beginIndex, int endIndex, int amount) {
 	// base case: nothing to shift
-	if (beginIndex >= endIndex) {
+	if (beginIndex > endIndex) {
 	    return;
 	}
 	// make room if needed
@@ -113,7 +119,7 @@ public class OrderedSuperArray<E extends Comparable<? super E>> {
     }
 
     private void resize(int capacity) {
-	Comparable[] newArray = new E[capacity];
+	Comparable[] newArray = new Comparable[capacity];
 	int newSize = Math.min(size, capacity);
 	System.arraycopy(contents, 0, newArray, 0, newSize);
 	contents = newArray;
