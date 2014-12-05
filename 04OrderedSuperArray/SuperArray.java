@@ -129,8 +129,30 @@ public class SuperArray {
         }
     }
 
+    public void swap(int i0, int i1) {
+	String tmp = contents[i0];
+	contents[i0] = contents[i1];
+	contents[i1] = contents[i0];
+    }
+
     public void insertionSort() {
 
+    }
+
+    public void selectionSort() {
+	for (int i = 0; i < size; i++) {
+	    swap(i, smallest(i));
+	}
+    }
+
+    private int smallest(int start) {
+	int min = start;
+	for (int i = start; i < size; i++) {
+	    if (contents[i].compareTo(contents[min]) < 0) {
+		min = i;
+	    }
+	}
+	return min;
     }
 
 }
