@@ -31,4 +31,35 @@ public class Sorter {
 	return yolo;
     }
 
+    public static void insertionSort(int[] array) {
+	for (int i = 1; i < array.length; i++) {
+	    int swag = array[i];
+	    // shift array[?:i-1] to array[?:i]
+	    int j = i;
+	    while (j > 0 && array[j-1] > swag) {
+		array[j] = array[j-1];
+		j--;
+	    }
+	    array[j] = swag;
+	}
+    }
+
+    public static void selectionSort(int[] array) {
+	for (int i = 0; i < array.length; i++) {
+	    swap(array, i, smallest(array, i));
+	}
+    }
+
+    /**
+     * @return the index of the smallest value in array[start:]
+     */
+    private static int smallest(int[] array, int start) {
+	int min = start;
+	for (int i = start; i < array.length; i++) {
+	    if (array[i] < array[min]) {
+		min = i;
+	    }
+	}
+	return min;
+    }
 }
