@@ -1,4 +1,13 @@
+import java.util.*;
+
 public class Sorter {
+
+    public static String name() {
+	return "Fitzgerald,Aidan";
+    }
+    public static int period() {
+	return 6;
+    }
 
     private static void swap(int[] array, int i0, int i1) {
 	int j = i0;
@@ -29,6 +38,47 @@ public class Sorter {
 	    }
 	}
 	return yolo;
+    }
+
+    public static void radixSort(int[] array) {
+	ArrayList<ArrayList> buckets = new ArrayList<ArrayList>();
+	for (int i = 0; i < 10; i++) {
+	    buckets.add(new ArrayList<Integer>());
+	}
+	int loops = maxNumDigits(array) + 1;
+	for (int i = 0; i < loops; i++) {
+	    
+	}
+    }
+
+    private static int digit(int n, int place) {
+	return digit(n, place, 10);
+    }
+
+    private static int digit(int n, int place, int radix) {
+	for (int i = 0; i < place; i++) {
+	    n /= radix;
+	}
+	return n % radix;
+    }
+
+    private static int maxNumDigits(int[] A) {
+	int yolo = 0;
+	for (int n: A) {
+	    int i = numDigits(n);
+	    if (i > yolo) {
+		yolo = i;
+	    }
+	}
+	return yolo;
+    }
+
+    private static int numDigits(int n) {
+	int i = 0;
+	for (; n != 0; i++) {
+	    n /= 10;
+	}
+	return i;
     }
 
 }
