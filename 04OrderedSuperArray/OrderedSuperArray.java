@@ -34,13 +34,12 @@ public class OrderedSuperArray extends SuperArray {
 
     // Implements a recursive binary search
     private int index(String e, int lower, int upper) {
-	String cast = e;
-	if (cast.compareTo(contents[lower]) <= 0)
+	if (e.compareTo(contents[lower]) <= 0)
 	    return lower;
-	if (cast.compareTo(contents[upper - 1]) >= 0)
+	if (e.compareTo(contents[upper - 1]) >= 0)
 	    return upper;
 	int pivot = (lower + upper) / 2,
-	    comparison = cast.compareTo(contents[pivot]);
+	    comparison = e.compareTo(contents[pivot]);
 	if (comparison < 0)
 	    return index(e, lower, pivot);
 	else

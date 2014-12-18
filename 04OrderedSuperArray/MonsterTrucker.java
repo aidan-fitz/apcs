@@ -1,6 +1,6 @@
 class MonsterTrucker {
     public static void main(String[] args) {
-	String[] numbers = new String[1 << 19];
+	String[] numbers = new String[1 << 17];
 	for (int i = 0; i < numbers.length; i++) {
 	    numbers[i] = String.valueOf(i);
 	}
