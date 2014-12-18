@@ -67,6 +67,20 @@ public class Driver {
 	dt = tf - ti;
 	System.out.println(dt + " ms");
 
+	System.arraycopy(orig, 0, copy, 0, orig.length);
+	System.out.print("Radix sort: ");
+	ti = System.currentTimeMillis();
+	Sorter.radixSort(copy);
+	tf = System.currentTimeMillis();
+	if (Arrays.equals(ref, copy)) {
+	    System.out.print("PASS, ");
+	}
+	else {
+	    System.out.print("FAIL, ");
+	}
+	dt = tf - ti;
+	System.out.println(dt + " ms");
+
 
     }
 

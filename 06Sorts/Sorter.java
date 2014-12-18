@@ -71,16 +71,25 @@ public class Sorter {
 	}
 	return min;
     }
-}
 
     public static void radixSort(int[] array) {
 	ArrayList<ArrayList> buckets = new ArrayList<ArrayList>();
-	for (int i = 0; i < 10; i++) {
+	// [-9, 9]
+	for (int i = 0; i < 19; i++) {
 	    buckets.add(new ArrayList<Integer>());
 	}
-	int loops = maxNumDigits(array) + 1;
-	for (int i = 0; i < loops; i++) {
-	    
+	int loops = maxNumDigits(array);// + 1;
+	for (int place = 0; place < loops; place++) {
+	    for (int n: array) {
+		buckets.get(9 + digit(n, place)).add(n);
+	    }
+	    int index = 0;
+	    for (ArrayList<Integer> bucket: buckets) {
+		while (bucket.size() > 0) {
+		    array[index] = bucket.remove(0).intValue();
+		    index++;
+		}
+	    }
 	}
     }
 
